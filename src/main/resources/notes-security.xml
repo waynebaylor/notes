@@ -19,6 +19,13 @@
 		<constructor-arg value="!QAZ1234$RFV"/>
 	</bean>
 	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost/notes" />
+    	<property name="username" value="root" />
+    	<property name="password" value="root" />
+	</bean>
+	
     <security:http pattern="/assets/**" security="none"/>
     <security:http pattern="/login/**" security="none"/>
     <security:http pattern="/register/**" security="none"/>
@@ -36,9 +43,10 @@
     <security:authentication-manager>
     	<security:authentication-provider>
     		<security:password-encoder ref="notesPasswordEncoder"/>
-    		<security:user-service>
-    			<security:user name="wtaylor" password="23ab3f7dceabecc880e90ff8ca515f4f1414015b3b824b89fc2a49fe9678509662305ab33b943fae" authorities="ROLE_USER"/>
-    		</security:user-service>
+    		<security:jdbc-user-service 
+    			data-source-ref="dataSource"
+    			users-by-username-query="select username, password, enabled from user where username = ?"
+    			authorities-by-username-query="select user.username, role.authority from user inner join role on user.id = role.user_id where user.username = ?"/>
     	</security:authentication-provider>
     </security:authentication-manager>
 </beans>

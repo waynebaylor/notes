@@ -5,6 +5,10 @@
 	<jsp:attribute name="title">Notes</jsp:attribute>
 	<jsp:body>
 		<div class="container">
+			<c:if test="${!empty errorMessage}">
+				<div class="alert alert-error">${errorMessage}</div>
+			</c:if>
+			
 			<form method="post" action="${contextPath}/j_spring_security_check" class="form-horizontal">
 				<div class="control-group">
 					<label class="control-label">Username</label>
