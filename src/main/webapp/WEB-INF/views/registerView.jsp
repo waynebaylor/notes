@@ -5,21 +5,17 @@
 	<jsp:attribute name="title">Notes - Register User</jsp:attribute>
 	<jsp:body>
 		<div class="container">
+			<c:if test="${!empty errorMessage}">
+				<div class="alert alert-error">${errorMessage}</div>
+			</c:if>
+			
 			<form method="post" action="${contextPath}/register/submit" class="form-horizontal">
 				<fieldset>
 					<legend>Register</legend>
-					<div class="control-group">
-						<label class="control-label">Username</label>
-						<div class="controls">
-							<input type="text" name="username" value="">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label">Password</label>
-						<div class="controls">
-							<input type="password" name="password" value="">
-						</div>
-					</div>
+					
+					<notes:textField label="Username" name="username" bindingResult="${result}"/>
+					<notes:passwordField label="Password" name="password" value="" bindingResult="${result}"/>
+					
 					<div class="form-actions">
 						<button type="submit" class="btn">Submit</button>
 					</div>					

@@ -1,19 +1,21 @@
 package com.baylorsc.notes.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class User {
 
 	private Long id;
-	private String username;
-	private String password;
-	private boolean enabled;
 	
-	// constructor
-	public User() {
-		this.id = (long)0;
-		this.username = "";
-		this.password = "";
-		this.enabled = false;
-	}
+	@NotNull(message="Username is requred.")
+	@Size(min=1, message="Username is required.")
+	private String username;
+	
+	@NotNull(message="Password is required.")
+	@Size(min=1, message="Password is required.")
+	private String password;
+	
+	private boolean enabled;
 	
 	// methods
 	public Long getId() {

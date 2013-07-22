@@ -9,24 +9,23 @@
 				<div class="alert alert-error">${errorMessage}</div>
 			</c:if>
 			
+			<c:if test="${!empty successMessage}">
+				<div class="alert alert-success">${successMessage}</div>
+			</c:if>
+			
 			<form method="post" action="${contextPath}/j_spring_security_check" class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label">Username</label>
-					<div class="controls">
-						<input type="text" name="j_username" value="">
+				<fieldset>
+					<legend>Login</legend>
+					
+					<notes:textField label="Username" name="j_username" value="${j_username}"/>
+					<notes:passwordField label="Password" name="j_password" value=""/>
+					
+					<div class="form-actions">
+						<button type="submit" class="btn">Login</button>
+						&nbsp;
+						<a href="${contextPath}/register/view">Register</a>
 					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label">Password</label>
-					<div class="controls">
-						<input type="password" name="j_password" value="">
-					</div>
-				</div>
-				<div class="form-actions">
-					<button type="submit" class="btn">Login</button>
-					&nbsp;
-					<a href="${contextPath}/register/view">Register</a>
-				</div>
+				</fieldset>
 			</form>
 		</div>
 	</jsp:body>

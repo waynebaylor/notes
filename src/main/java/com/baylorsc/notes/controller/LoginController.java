@@ -1,6 +1,7 @@
 package com.baylorsc.notes.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,8 +11,13 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginController 
 {
 	@RequestMapping(value="/view", method=RequestMethod.GET)
-	public String view() {
-		return "loginView";
+	public ModelAndView view(Model model) {
+		// copy any flash attributes that were set.
+		ModelAndView m = new ModelAndView();
+		m.addAllObjects(model.asMap());
+		m.setViewName("loginView");
+
+		return m;
 	}
 	
 	@RequestMapping(value="/failed", method=RequestMethod.GET)
