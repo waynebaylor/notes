@@ -17,11 +17,6 @@
         http://www.springframework.org/schema/tx 
         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<bean id="notesPasswordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder">
-		<!-- site-wide password encoder secret -->
-		<constructor-arg value="!QAZ1234$RFV"/>
-	</bean>
-	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
 		<property name="url" value="jdbc:mysql://localhost/notes" />
@@ -29,37 +24,17 @@
     	<property name="password" value="root" />
 	</bean>
 	
-	
-	<!-- FIX TRANSACTIONS -->
-    <bean id="transactionManager"
-        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-    
-    <bean id="transactionAwareDataSource"
-        class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
-        <constructor-arg ref="dataSource" />
-    </bean>
-    
-    <tx:annotation-driven transaction-manager="transactionManager"/>
-    <!-- FIX TRANSACTIONS -->
-    
-    
-    <bean class="org.jooq.impl.DataSourceConnectionProvider" name="connectionProvider">
-        <constructor-arg ref="dataSource" />
-    </bean>
-    
-    <bean id="dsl" class="org.jooq.impl.DSL" factory-method="using">
-    	<constructor-arg ref="dataSource"/>
-    	<constructor-arg value="MYSQL"/>
-    </bean>
+	<bean id="notesPasswordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder">
+		<!-- site-wide password encoder secret -->
+		<constructor-arg value="!QAZ1234$RFV"/>
+	</bean>
 	
     <security:http pattern="/assets/**" security="none"/>
     <security:http pattern="/login/**" security="none"/>
     <security:http pattern="/register/**" security="none"/>
     
-    <security:http auto-config="true">
-    	<security:intercept-url pattern="/**" access="ROLE_USER"/>
+    <security:http auto-config="true" use-expressions="true">
+    	<security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
     	<security:form-login 
     		login-page="/login/view" 
     		default-target-url="/home/view"
@@ -77,4 +52,6 @@
     			authorities-by-username-query="select user.username, role.authority from user inner join role on user.id = role.user_id where user.username = ?"/>
     	</security:authentication-provider>
     </security:authentication-manager>
+    
+    <security:global-method-security pre-post-annotations="enabled"/>
 </beans>

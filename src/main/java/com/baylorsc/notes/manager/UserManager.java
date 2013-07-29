@@ -1,41 +1,87 @@
 package com.baylorsc.notes.manager;
 
-import org.jooq.DSLContext;
+import java.util.List;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.transform.Transformers;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baylorsc.notes.model.User;
 
-@Component
-public class UserManager 
+@Repository
+@Transactional
+public class UserManager extends Manager
 {
 	@Autowired
-	@Qualifier("dsl")
-	private DSLContext context;
+	private SessionFactory sessionFactory;
 	
+	@Override
+	public SessionFactory getSessionFactory() {
+		return this.sessionFactory;
+	}
+
 	public boolean userExists(User user) {
-		int count = this.context.resultQuery("select count(*) from user where username = ?", user.getUsername()).fetch().get(0).getValue(0, Integer.class);
+		String sql = "select count(*) as count from user where username = :username";
+		
+		Object result = this.session().createSQLQuery(sql)
+			.addScalar("count", StandardBasicTypes.INTEGER)
+			.setParameter("username", user.getUsername())
+			.uniqueResult();
+		
+		int count = (Integer)result;
+		
 		return count > 0;
 	}
 	
 	public void createUser(User user) {
-		this.context.execute(
-				"insert into user(username, password, enabled) values(?, ?, ?)", 
-				user.getUsername(), 
-				user.getPassword(), 
-				"T");
+		String sql = "insert into user(username, password, enabled) values(:username, :password, :enabled)";
+		this.session().createSQLQuery(sql)
+			.setParameter("username", user.getUsername())
+			.setParameter("password", user.getPassword())
+			.setParameter("enabled", "T")
+			.executeUpdate();
 		
-		Long userId = this.context.lastID().longValue();
+		Long userId = this.lastInsertId();
 		
-		this.context.execute(
-				"insert into role(user_id, authority) values(?, ?)", 
-				userId,
-				"ROLE_USER");
+		sql = "insert into role(user_id, authority) values(:user_id, :authority)";
+		this.session().createSQLQuery(sql)
+			.setParameter("user_id", userId)
+			.setParameter("authority", "ROLE_USER")
+			.executeUpdate();
 	}
 	
 	public User findUser(String username) {
-		return null;
+		String sql = "select id, username, enabled from user where username = :username";
+		Object result = this.session().createSQLQuery(sql)
+			.setParameter("username", username)
+			.setResultTransformer(Transformers.aliasToBean(User.class))
+			.uniqueResult();
+		
+		return (User)result;
+	}
+	
+	public List<User> findAllUsers() {
+		String sql = "select id, username, enabled from user";
+		List<?> results = this.session().createSQLQuery(sql)
+			.setResultTransformer(Transformers.aliasToBean(User.class))
+			.list();
+		
+		return (List<User>)results;
+	}
+	
+	public void deleteUser(Long userId) {
+		String sql = "delete from role where user_id = :user_id";
+		this.session().createSQLQuery(sql)
+			.setParameter("user_id", userId)
+			.executeUpdate();
+		
+		sql = "delete from user where id = :id";
+		this.session().createSQLQuery(sql)
+			.setParameter("id", userId)
+			.executeUpdate();
 	}
 }
 
