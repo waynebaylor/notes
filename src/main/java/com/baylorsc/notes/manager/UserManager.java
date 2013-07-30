@@ -1,6 +1,7 @@
 package com.baylorsc.notes.manager;
 
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.transform.Transformers;
@@ -36,7 +37,7 @@ public class UserManager extends Manager
 		return count > 0;
 	}
 	
-	public void createUser(User user) {
+	public Long createUser(User user) {
 		String sql = "insert into user(username, password, enabled) values(:username, :password, :enabled)";
 		this.session().createSQLQuery(sql)
 			.setParameter("username", user.getUsername())
@@ -51,6 +52,8 @@ public class UserManager extends Manager
 			.setParameter("user_id", userId)
 			.setParameter("authority", "ROLE_USER")
 			.executeUpdate();
+		
+		return userId;
 	}
 	
 	public User findUser(String username) {
@@ -70,6 +73,19 @@ public class UserManager extends Manager
 			.list();
 		
 		return (List<User>)results;
+	}
+	
+	public List<Map<String, Object>> findAllUsersStatus() {
+		String sql = "select u.id, u.username, u.enabled, r.authority from user u left join role r on u.id = r.user_id and r.authority = 'ROLE_ADMIN'";
+		List<?> results = this.session().createSQLQuery(sql)
+			.addScalar("id", StandardBasicTypes.LONG)
+			.addScalar("username", StandardBasicTypes.STRING)
+			.addScalar("enabled", StandardBasicTypes.TRUE_FALSE)
+			.addScalar("authority", StandardBasicTypes.STRING)
+			.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP)
+			.list();
+		
+		return (List<Map<String, Object>>)results;
 	}
 	
 	public void deleteUser(Long userId) {

@@ -52,6 +52,4 @@
     			authorities-by-username-query="select user.username, role.authority from user inner join role on user.id = role.user_id where user.username = ?"/>
     	</security:authentication-provider>
     </security:authentication-manager>
-    
-    <security:global-method-security pre-post-annotations="enabled"/>
 </beans>

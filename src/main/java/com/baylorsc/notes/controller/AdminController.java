@@ -22,17 +22,19 @@ public class AdminController extends AuthController
 	public ModelAndView view() {
 		ModelAndView m = new ModelAndView("adminView");
 		
-		m.addObject("users", this.userManager.findAllUsers());
+		m.addObject("users", this.userManager.findAllUsersStatus());
 		
 		return m;
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value="/deleteUser", method=RequestMethod.POST)
-	public ModelAndView deleteUser(@Param Long userId) {
+	@RequestMapping(value="/delete-user", method=RequestMethod.POST)
+	public ModelAndView deleteUser(@Param Long[] userIds) {
 		ModelAndView m = new ModelAndView("redirect:/admin/view");
 		
-		this.userManager.deleteUser( userId);
+		for(Long userId : userIds) {
+			this.userManager.deleteUser(userId);
+		}
 		
 		return m;
 	}

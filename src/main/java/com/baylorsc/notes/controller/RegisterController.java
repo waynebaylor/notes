@@ -2,8 +2,6 @@ package com.baylorsc.notes.controller;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -21,8 +19,6 @@ import com.baylorsc.notes.model.User;
 @RequestMapping("/register")
 public class RegisterController 
 {
-	private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
-	
 	@Autowired
 	private StandardPasswordEncoder pwEncoder;
 	
