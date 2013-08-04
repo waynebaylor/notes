@@ -14,35 +14,46 @@
 			</c:if>
 			
 			<div class="home-search-results">
-				<fieldset><legend>Recent Notes</legend></fieldset>
-				<table class="table table-striped table-condensed table-bordered">
-					<thead>
-						<tr>
-							<th>Note</th>
-							<th>Options</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${notes}" var="note">
-							<tr>
-								<td>
-									${fn:substring(note.content, 0, 100)}
-									<c:if test="${fn:length(note.content) > 100}">...</c:if>
-								</td>
-								<td>
-									<a href="">View</a>
-									<a href="">Edit</a>
-									<a href="">Delete</a>
-								</td>
-							</tr>
-						</c:forEach>
-						<c:if test="${empty notes}">
-							<tr>
-								<td colspan="2">No notes</td>
-							</tr>
-						</c:if>
-					</tbody>
-				</table>
+				<form method="post" action="${contextPath}/note/delete">
+					<fieldset>
+						<legend>Recent Notes</legend>
+						<table class="table table-striped table-condensed table-bordered">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Note</th>
+									<th>Options</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${notes}" var="note">
+									<tr>
+										<td>
+											<input type="checkbox" id="noteIds_${note.id}" name="noteIds" value="${note.id}">
+										</td>
+										<td>
+											<label for="noteIds_${note.id}">
+												${fn:substring(note.content, 0, 100)}
+												<c:if test="${fn:length(note.content) > 100}">...</c:if>
+											</label>
+										</td>
+										<td>
+											<a href="${contextPath}/note/view?id=${note.id}">View</a>
+											<a href="${contextPath}/note//edit/view?id=${note.id}">Edit</a>
+										</td>
+									</tr>
+								</c:forEach>
+								<c:if test="${empty notes}">
+									<tr>
+										<td colspan="2">No notes</td>
+									</tr>
+								</c:if>
+							</tbody>
+						</table>
+					</fieldset>
+					
+					<button type="submit" class="btn">Delete</button>
+				</form>
 			</div>
 			<div class="home-create-note">
 				<form class="form-vertical" method="post" action="${contextPath}/note/create">

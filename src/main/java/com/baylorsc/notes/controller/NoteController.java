@@ -4,6 +4,7 @@ import java.security.Principal;
 
 import javax.validation.Valid;
 
+import org.jboss.logging.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -51,14 +52,14 @@ public class NoteController extends AuthController
 	}
 	
 	@RequestMapping(value="/view", method=RequestMethod.GET) 
-	public ModelAndView view() {
+	public ModelAndView view(@Param Long id) {
 		ModelAndView m = new ModelAndView("noteView");
 		
 		return m;
 	}
 	
 	@RequestMapping(value="/edit/view", method=RequestMethod.GET)
-	public ModelAndView edit() {
+	public ModelAndView edit(@Param Long id) {
 		ModelAndView m = new ModelAndView("editNoteView");
 		
 		return m;
@@ -67,5 +68,15 @@ public class NoteController extends AuthController
 	@RequestMapping(value="/edit/submit", method=RequestMethod.POST)
 	public String editSubmit() {
 		return "redirect:/home/view";
+	}
+	
+	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	public ModelAndView delete(Principal principal, @Param Long[] noteIds) {
+		ModelAndView m = new ModelAndView("redirect:/home/view");
+		
+		User currentUser = this.userManager.findUser(principal.getName());
+		this.noteManager.delete(currentUser, noteIds);
+		
+		return m;
 	}
 }

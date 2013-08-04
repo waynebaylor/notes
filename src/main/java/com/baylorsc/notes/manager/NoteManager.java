@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.baylorsc.notes.model.Note;
+import com.baylorsc.notes.model.User;
 
 @Repository
 @Transactional
@@ -29,7 +30,7 @@ public class NoteManager extends Manager
 	
 	public Long createNote(Long userId, String content) {
 		// create the note.
-		String sql = "insert into note(user_id, content) values(:user_id, :content)"; // FIXME 
+		String sql = "insert into note(user_id, content) values(:user_id, :content)"; 
 		
 		this.session().createSQLQuery(sql)
 			.setParameter("user_id", userId)
@@ -48,7 +49,7 @@ public class NoteManager extends Manager
 	}
 	
 	public List<Note> findAllNotes(Long userId) {
-		String sql = "select id, user_id as userId, content from note where user_id = :user_id"; // FIXME
+		String sql = "select id, user_id as userId, content from note where user_id = :user_id"; 
 		
 		Object result = this.session().createSQLQuery(sql)
 			.addScalar("id", StandardBasicTypes.LONG)
@@ -59,6 +60,19 @@ public class NoteManager extends Manager
 			.list();
 		
 		return (List<Note>)result;
+	}
+	
+	public void delete(User user, Long... noteIds) {
+		// delete any tags associaated with the notes first.
+		this.tagManager.delete(user, noteIds);
+		
+		// delete the notes.
+		String sql = "delete from note where user_id = :user_id and id in (:noteIds)";
+		
+		this.session().createSQLQuery(sql)
+			.setParameter("user_id", user.getId())
+			.setParameterList("noteIds", noteIds)
+			.executeUpdate();
 	}
 	
 	private List<String> parseTags(String content) {

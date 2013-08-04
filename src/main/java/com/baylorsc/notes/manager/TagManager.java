@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.baylorsc.notes.model.Tag;
+import com.baylorsc.notes.model.User;
 
 @Repository
 @Transactional
@@ -48,5 +49,14 @@ public class TagManager extends Manager
 			.list();
 			
 		return (List<Tag>)result;
+	}
+	
+	public void delete(User user, Long... noteIds) {
+		String sql = ""; // FIXME
+		
+//		this.session().createSQLQuery(sql)
+//			.setParameter("user_id", user.getId())
+//			.setParameterList("noteIds", noteIds)
+//			.executeUpdate();
 	}
 }
