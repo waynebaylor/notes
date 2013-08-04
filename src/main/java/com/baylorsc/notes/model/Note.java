@@ -1,16 +1,16 @@
 package com.baylorsc.notes.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class Note {
 
 	private Long id;
 	private Long userId;
-	private String content;
 	
-	public Note() {
-		this.id = (long)0;
-		this.userId = (long)0;
-		this.content = "";
-	}
+	@NotNull(message="Content is required.")
+	@Size(min=1, message="Content is required.")
+	private String content;
 	
 	// methods
 	public Long getId() {
@@ -25,7 +25,6 @@ public class Note {
 		return this.content;
 	}
 	
-	
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -37,5 +36,4 @@ public class Note {
 	public void setContent(String content) {
 		this.content = content;
 	}	
-	
 }

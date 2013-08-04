@@ -6,14 +6,6 @@ public class Tag {
 	private Long noteId;
 	private String name;
 	
-	// constructors
-	public Tag() {
-		this.id = (long)0;
-		this.noteId = (long)0;
-		this.name = "";
-	}
-	
-	// methods
 	// methods
 	public Long getId() {
 		return this.id;		
@@ -26,7 +18,6 @@ public class Tag {
 	public String getName() {
 		return this.name;
 	}
-	
 	
 	public void setId(Long id) {
 		this.id = id;

@@ -5,6 +5,14 @@
 	<jsp:attribute name="title">Notes - Home</jsp:attribute>
 	<jsp:body>
 		<div class="container">
+			<c:if test="${!empty errorMessage}">
+				<div class="alert alert-error">${errorMessage}</div>
+			</c:if>
+			
+			<c:if test="${!empty successMessage}">
+				<div class="alert alert-success">${successMessage}</div>
+			</c:if>
+			
 			<div class="home-search-results">
 				<fieldset><legend>Recent Notes</legend></fieldset>
 				<table class="table table-striped table-condensed table-bordered">
@@ -15,9 +23,24 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td colspan="2">No notes</td>
-						</tr>
+						<c:forEach items="${notes}" var="note">
+							<tr>
+								<td>
+									${fn:substring(note.content, 0, 100)}
+									<c:if test="${fn:length(note.content) > 100}">...</c:if>
+								</td>
+								<td>
+									<a href="">View</a>
+									<a href="">Edit</a>
+									<a href="">Delete</a>
+								</td>
+							</tr>
+						</c:forEach>
+						<c:if test="${empty notes}">
+							<tr>
+								<td colspan="2">No notes</td>
+							</tr>
+						</c:if>
 					</tbody>
 				</table>
 			</div>
@@ -25,12 +48,9 @@
 				<form class="form-vertical" method="post" action="${contextPath}/note/create">
 					<fieldset>
 						<legend>Create Note</legend>
-						<notes:formField>
-							<jsp:attribute name="label">Note</jsp:attribute>
-							<jsp:body>
-								<textarea class="span12" rows="8" name="content"></textarea>
-							</jsp:body>
-						</notes:formField>
+						
+						<notes:textArea cssClass="span12" label="Note" name="content" bindingResult="${result}"/>
+						
 						<div class="form-actions">
 							<button type="submit" class="btn">Create</button>
 						</div>

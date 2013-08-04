@@ -11,13 +11,15 @@
 			
 			<form method="post" action="${contextPath}/register/submit" class="form-horizontal">
 				<fieldset>
-					<legend>Register</legend>
+					<legend>New User Registration</legend>
 					
-					<notes:textField label="Username" name="username" bindingResult="${result}"/>
+					<notes:textField label="Desired Username" name="username" bindingResult="${result}"/>
 					<notes:passwordField label="Password" name="password" value="" bindingResult="${result}"/>
 					
 					<div class="form-actions">
 						<button type="submit" class="btn">Submit</button>
+						&nbsp;
+						<a href="${contextPath}/login/view">Cancel</a>
 					</div>					
 				</fieldset>
 			</form>

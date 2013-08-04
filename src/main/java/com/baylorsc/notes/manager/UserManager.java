@@ -59,6 +59,9 @@ public class UserManager extends Manager
 	public User findUser(String username) {
 		String sql = "select id, username, enabled from user where username = :username";
 		Object result = this.session().createSQLQuery(sql)
+			.addScalar("id", StandardBasicTypes.LONG)
+			.addScalar("username", StandardBasicTypes.STRING)
+			.addScalar("enabled", StandardBasicTypes.TRUE_FALSE)
 			.setParameter("username", username)
 			.setResultTransformer(Transformers.aliasToBean(User.class))
 			.uniqueResult();
@@ -69,6 +72,9 @@ public class UserManager extends Manager
 	public List<User> findAllUsers() {
 		String sql = "select id, username, enabled from user";
 		List<?> results = this.session().createSQLQuery(sql)
+			.addScalar("id", StandardBasicTypes.LONG)
+			.addScalar("username", StandardBasicTypes.STRING)
+			.addScalar("enabled", StandardBasicTypes.TRUE_FALSE)
 			.setResultTransformer(Transformers.aliasToBean(User.class))
 			.list();
 		
