@@ -95,6 +95,8 @@ public class NoteManager extends Manager
 		List<String> tagNames = new ArrayList<String>();
 		
 		// FIXME
+		// tags start with a # followed by alpha-numeric characters: #todo #reminder #recipe. 
+		// if any other characters are found then it's not interpreted as a tag.
 		tagNames.add("todo");
 		tagNames.add("shoes");
 		
