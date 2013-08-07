@@ -1,6 +1,8 @@
 package com.baylorsc.notes.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -14,8 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.baylorsc.notes.manager.NoteManager;
+import com.baylorsc.notes.manager.TagManager;
 import com.baylorsc.notes.manager.UserManager;
 import com.baylorsc.notes.model.Note;
+import com.baylorsc.notes.model.Tag;
 import com.baylorsc.notes.model.User;
 
 @Controller
@@ -27,6 +31,9 @@ public class NoteController extends AuthController
 	
 	@Autowired
 	private NoteManager noteManager;
+	
+	@Autowired
+	private TagManager tagManager;
 	
 	@RequestMapping(value="/create", method=RequestMethod.POST)
 	public ModelAndView create(Principal principal, @Valid Note note, BindingResult result, RedirectAttributes flashAttrs) {
@@ -52,8 +59,15 @@ public class NoteController extends AuthController
 	}
 	
 	@RequestMapping(value="/view", method=RequestMethod.GET) 
-	public ModelAndView view(@Param Long id) {
+	public ModelAndView view(Principal principal, @Param Long id) {
 		ModelAndView m = new ModelAndView("noteView");
+		
+		User currentUser = this.userManager.findUser(principal.getName());
+		Note note = this.noteManager.findNote(currentUser, id);
+		List<Tag> tags = this.tagManager.findNoteTags(currentUser, note.getId());
+		
+		m.addObject("note", note);
+		m.addObject("tags", tags);
 		
 		return m;
 	}

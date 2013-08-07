@@ -25,26 +25,27 @@ public class TagManager extends Manager
 	}
 	
 	public Long createTag(Long noteId, String name) {
-		// create the associated tags.
-		String sql = ""; // FIXME
+		String sql = "insert into tag(note_id, name) values(:note_id, :name)"; 
 
 		this.session().createSQLQuery(sql)
-		.setParameter("noteId", noteId)
-		.setParameter("name", name)
-		.executeUpdate();
+			.setParameter("note_id", noteId)
+			.setParameter("name", name)
+			.executeUpdate();
 		
 		Long tagId = this.lastInsertId();
 		
 		return tagId;
 	}
 
-	public List<Tag> findAllTags(Long noteId) {
-		String sql = ""; // FIXME
+	public List<Tag> findNoteTags(User user, Long noteId) {
+		String sql = "select t.id, t.note_id as noteId, t.name from tag t where t.note_id = :note_id and t.note_id in (select n.id from note n where n.user_id = :user_id)"; 
 		
 		Object result = this.session().createSQLQuery(sql)
 			.addScalar("id", StandardBasicTypes.LONG)
 			.addScalar("noteId", StandardBasicTypes.LONG)
 			.addScalar("name", StandardBasicTypes.STRING)
+			.setParameter("note_id", noteId)
+			.setParameter("user_id", user.getId())
 			.setResultTransformer(Transformers.aliasToBean(Tag.class))
 			.list();
 			
@@ -52,11 +53,11 @@ public class TagManager extends Manager
 	}
 	
 	public void delete(User user, Long... noteIds) {
-		String sql = ""; // FIXME
+		String sql = "delete from tag t where t.note_id in (:note_ids) and t.note_id in (select n.id from note n where n.user_id = :user_id)";
 		
-//		this.session().createSQLQuery(sql)
-//			.setParameter("user_id", user.getId())
-//			.setParameterList("noteIds", noteIds)
-//			.executeUpdate();
+		this.session().createSQLQuery(sql)
+			.setParameter("user_id", user.getId())
+			.setParameterList("noteIds", noteIds)
+			.executeUpdate();
 	}
 }

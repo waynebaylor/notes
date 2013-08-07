@@ -1,0 +1,11 @@
+ul.note-tag-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+ul.note-tag-list li {
+	margin: 0;
+	padding: 0;
+	
+}

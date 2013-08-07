@@ -9,6 +9,7 @@ import org.hibernate.type.StandardBasicTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.UriUtils;
 
 import com.baylorsc.notes.model.Note;
 import com.baylorsc.notes.model.User;
@@ -36,7 +37,7 @@ public class NoteManager extends Manager
 			.setParameter("user_id", userId)
 			.setParameter("content", content)
 			.executeUpdate();
-		
+
 		Long noteId = this.lastInsertId();
 		
 		// create the tags parsed from the content.
@@ -75,10 +76,27 @@ public class NoteManager extends Manager
 			.executeUpdate();
 	}
 	
+	public Note findNote(User user, Long id) {
+		String sql = "select id, user_id as userId, content from note where id = :id and user_id = :user_id"; 
+		
+		Object result = this.session().createSQLQuery(sql)
+			.addScalar("id", StandardBasicTypes.LONG)
+			.addScalar("userId", StandardBasicTypes.LONG)
+			.addScalar("content", StandardBasicTypes.STRING)
+			.setParameter("id", id)
+			.setParameter("user_id", user.getId())
+			.setResultTransformer(Transformers.aliasToBean(Note.class))
+			.uniqueResult();
+		
+		return (Note)result;
+	}
+	
 	private List<String> parseTags(String content) {
 		List<String> tagNames = new ArrayList<String>();
 		
 		// FIXME
+		tagNames.add("todo");
+		tagNames.add("shoes");
 		
 		return tagNames;
 	}

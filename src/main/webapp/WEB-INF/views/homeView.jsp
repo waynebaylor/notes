@@ -33,7 +33,8 @@
 										</td>
 										<td>
 											<label for="noteIds_${note.id}">
-												${fn:substring(note.content, 0, 100)}
+												<c:set var="noteContent" value="${fn:substring(note.content, 0, 100)}"/>
+												${util:escapeHtml(noteContent)}
 												<c:if test="${fn:length(note.content) > 100}">...</c:if>
 											</label>
 										</td>
