@@ -53,11 +53,11 @@ public class TagManager extends Manager
 	}
 	
 	public void delete(User user, Long... noteIds) {
-		String sql = "delete from tag t where t.note_id in (:note_ids) and t.note_id in (select n.id from note n where n.user_id = :user_id)";
+		String sql = "delete from tag where note_id in (:note_ids) and note_id in (select n.id from note n where n.user_id = :user_id)";
 		
 		this.session().createSQLQuery(sql)
 			.setParameter("user_id", user.getId())
-			.setParameterList("noteIds", noteIds)
+			.setParameterList("note_ids", noteIds)
 			.executeUpdate();
 	}
 }

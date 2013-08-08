@@ -17,6 +17,7 @@
 				<fieldset>	
 					<legend>Edit Note</legend>	
 								
+					<input type="hidden" name="id" value="${note.id}">
 					<notes:textArea cssClass="span12" label="Note" name="content" value="${note.content}"/>
 					
 					<div class="form-actions">

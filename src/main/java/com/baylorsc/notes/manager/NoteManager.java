@@ -101,11 +101,11 @@ public class NoteManager extends Manager
 		}
 		
 		// save note.
-		String sql = "update note set content = :content where note_id = :note_id and user_id = :user_id";
+		String sql = "update note set content = :content where id = :id and user_id = :user_id";
 		
 		this.session().createSQLQuery(sql)
 			.setParameter("content", note.getContent())
-			.setParameter("note_id", note.getId())
+			.setParameter("id", note.getId())
 			.setParameter("user_id", user.getId())
 			.executeUpdate();
 	}
