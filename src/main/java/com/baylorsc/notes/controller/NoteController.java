@@ -1,7 +1,5 @@
 package com.baylorsc.notes.controller;
 
-import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -36,8 +34,8 @@ public class NoteController extends AuthController
 	private TagManager tagManager;
 	
 	@RequestMapping(value="/create", method=RequestMethod.POST)
-	public ModelAndView create(Principal principal, @Valid Note note, BindingResult result, RedirectAttributes flashAttrs) {
-		ModelAndView m = new ModelAndView("redirect:/home/view");
+	public ModelAndView create(@Valid Note note, BindingResult result, RedirectAttributes flashAttrs) {
+		ModelAndView m = new ModelAndView();
 		
 		if(result.hasErrors()) {
 			m.addObject("result", result);
@@ -47,7 +45,7 @@ public class NoteController extends AuthController
 			m.setViewName("homeView");
 		}
 		else {
-			User currentUser = this.userManager.findUser(principal.getName());
+			User currentUser = this.getCurrentUser();
 			this.noteManager.createNote(currentUser.getId(), note.getContent());
 			
 			flashAttrs.addFlashAttribute("successMessage","Note created.");
@@ -59,10 +57,10 @@ public class NoteController extends AuthController
 	}
 	
 	@RequestMapping(value="/view", method=RequestMethod.GET) 
-	public ModelAndView view(Principal principal, @Param Long id) {
+	public ModelAndView view(@Param Long id) {
 		ModelAndView m = new ModelAndView("noteView");
 		
-		User currentUser = this.userManager.findUser(principal.getName());
+		User currentUser = this.getCurrentUser();
 		Note note = this.noteManager.findNote(currentUser, id);
 		List<Tag> tags = this.tagManager.findNoteTags(currentUser, note.getId());
 		
@@ -76,21 +74,48 @@ public class NoteController extends AuthController
 	public ModelAndView edit(@Param Long id) {
 		ModelAndView m = new ModelAndView("editNoteView");
 		
+		User currentUser = this.getCurrentUser();
+		Note note = this.noteManager.findNote(currentUser, id);
+		
+		m.addObject("note", note);
+		
 		return m;
 	}
 	
 	@RequestMapping(value="/edit/submit", method=RequestMethod.POST)
-	public String editSubmit() {
-		return "redirect:/home/view";
+	public ModelAndView editSubmit(@Valid Note note, BindingResult result, RedirectAttributes flashAttrs) {
+		ModelAndView m = new ModelAndView();
+		
+		if(result.hasErrors()) {
+			m.addObject("result", result);
+			
+			flashAttrs.addFlashAttribute("errorMessage", "Save failed. Please correct the errors below.");
+			
+			m.setViewName("editNoteView");
+		}
+		else {
+			User currentUser = this.getCurrentUser();
+			this.noteManager.save(currentUser, note);
+			
+			flashAttrs.addFlashAttribute("successMessage","Note saved.");
+			
+			m.setViewName("redirect:/home/view");
+		}
+		
+		return m;
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
-	public ModelAndView delete(Principal principal, @Param Long[] noteIds) {
+	public ModelAndView delete(@Param Long[] noteIds) {
 		ModelAndView m = new ModelAndView("redirect:/home/view");
 		
-		User currentUser = this.userManager.findUser(principal.getName());
+		User currentUser = this.getCurrentUser();
 		this.noteManager.delete(currentUser, noteIds);
 		
 		return m;
+	}
+	
+	private User getCurrentUser() {
+		return this.userManager.findUser(this.getAuthenticatedUser().getName());
 	}
 }

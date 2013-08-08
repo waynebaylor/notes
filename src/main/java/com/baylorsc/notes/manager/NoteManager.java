@@ -9,7 +9,6 @@ import org.hibernate.type.StandardBasicTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.util.UriUtils;
 
 import com.baylorsc.notes.model.Note;
 import com.baylorsc.notes.model.User;
@@ -91,14 +90,38 @@ public class NoteManager extends Manager
 		return (Note)result;
 	}
 	
+	public void save(User user, Note note) {
+		// delete tags.
+		this.tagManager.delete(user, note.getId());
+		
+		// save new tags.
+		List<String> tagNames = this.parseTags(note.getContent());
+		for(String name : tagNames) {
+			this.tagManager.createTag(note.getId(), name);
+		}
+		
+		// save note.
+		String sql = "update note set content = :content where note_id = :note_id and user_id = :user_id";
+		
+		this.session().createSQLQuery(sql)
+			.setParameter("content", note.getContent())
+			.setParameter("note_id", note.getId())
+			.setParameter("user_id", user.getId())
+			.executeUpdate();
+	}
+	
 	private List<String> parseTags(String content) {
 		List<String> tagNames = new ArrayList<String>();
 		
 		// FIXME
 		// tags start with a # followed by alpha-numeric characters: #todo #reminder #recipe. 
 		// if any other characters are found then it's not interpreted as a tag.
-		tagNames.add("todo");
-		tagNames.add("shoes");
+		String[] words = content.split("[\\s]+");
+		for(String word : words) {
+			if(word.matches("#[A-Za-z0-9]+")) {
+				tagNames.add(word.substring(1, word.length()));
+			}
+		}
 		
 		return tagNames;
 	}
