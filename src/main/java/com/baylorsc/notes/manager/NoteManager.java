@@ -110,10 +110,24 @@ public class NoteManager extends Manager
 			.executeUpdate();
 	}
 	
+	public List<Note> findWithAnyTag(User user, String... tags) {
+		String sql = "select distinct n.id, n.user_id as userId, n.content from note n inner join tag t on n.id = t.note_id where n.user_id = :user_id and t.name in (:tags)";
+		
+		Object result = this.session().createSQLQuery(sql)
+			.addScalar("id", StandardBasicTypes.LONG)
+			.addScalar("userId", StandardBasicTypes.LONG)
+			.addScalar("content", StandardBasicTypes.STRING)
+			.setParameter("user_id", user.getId())
+			.setParameterList("tags", tags)
+			.setResultTransformer(Transformers.aliasToBean(Note.class))
+			.list();
+		
+		return (List<Note>)result;
+	}
+	
 	private List<String> parseTags(String content) {
 		List<String> tagNames = new ArrayList<String>();
 		
-		// FIXME
 		// tags start with a # followed by alpha-numeric characters: #todo #reminder #recipe. 
 		// if any other characters are found then it's not interpreted as a tag.
 		String[] words = content.split("[\\s]+");

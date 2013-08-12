@@ -15,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.baylorsc.notes.manager.NoteManager;
 import com.baylorsc.notes.manager.TagManager;
-import com.baylorsc.notes.manager.UserManager;
 import com.baylorsc.notes.model.Note;
 import com.baylorsc.notes.model.Tag;
 import com.baylorsc.notes.model.User;
@@ -24,9 +23,6 @@ import com.baylorsc.notes.model.User;
 @RequestMapping("/note")
 public class NoteController extends AuthController
 {
-	@Autowired
-	private UserManager userManager;
-	
 	@Autowired
 	private NoteManager noteManager;
 	
@@ -113,9 +109,5 @@ public class NoteController extends AuthController
 		this.noteManager.delete(currentUser, noteIds);
 		
 		return m;
-	}
-	
-	private User getCurrentUser() {
-		return this.userManager.findUser(this.getAuthenticatedUser().getName());
 	}
 }

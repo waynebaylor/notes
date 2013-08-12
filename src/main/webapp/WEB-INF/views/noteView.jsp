@@ -10,7 +10,7 @@
 					<ul class="note-tag-list">
 						<c:forEach items="${tags}" var="tag">
 							<li>
-								<a href="${contextPath}/search/tag?name=${tag.name}">#${util:escapeHtml(tag.name)}</a>
+								<a href="${contextPath}/search/tag?names=${tag.name}">#${util:escapeHtml(tag.name)}</a>
 							</li>
 						</c:forEach>
 					</ul>
