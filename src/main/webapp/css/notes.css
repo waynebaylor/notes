@@ -9,3 +9,14 @@ ul.note-tag-list li {
 	padding: 0;
 	
 }
+
+legend {
+	margin-bottom: 0;
+}
+
+form .form-actions {
+	margin-top: 0;
+	border: none;
+	background-color: transparent;
+	padding-top:0;
+}

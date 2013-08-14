@@ -13,6 +13,30 @@
 				<div class="alert alert-success">${successMessage}</div>
 			</c:if>
 			
+			<div class="home-search">
+				<form class="form-inline" method="get" action="${contextPath}/search">
+					<div class="input-append">
+						<input type="text" class="span4" name="q" value="">
+						<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
+					</div>
+				</form>
+			</div>
+			
+			<div class="home-create-note">
+				<a href="#">Create Note</a>
+				<form class="form-vertical" style="display:none;" method="post" action="${contextPath}/note/create">
+					<fieldset>
+						<legend>Create Note</legend>
+						
+						<notes:textArea cssClass="span12" label="" name="content" bindingResult="${result}"/>
+						
+						<div class="form-actions">
+							<button type="submit" class="btn">Create</button>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+			
 			<div class="home-search-results">
 				<form method="post" action="${contextPath}/note/delete">
 					<fieldset>
@@ -53,22 +77,20 @@
 						</table>
 					</fieldset>
 					
-					<button type="submit" class="btn">Delete</button>
-				</form>
-			</div>
-			<div class="home-create-note">
-				<form class="form-vertical" method="post" action="${contextPath}/note/create">
-					<fieldset>
-						<legend>Create Note</legend>
-						
-						<notes:textArea cssClass="span12" label="Note" name="content" bindingResult="${result}"/>
-						
-						<div class="form-actions">
-							<button type="submit" class="btn">Create</button>
-						</div>
-					</fieldset>
+					<div class="form-actions">
+						<button type="submit" class="btn">Delete</button>
+					</div>
 				</form>
 			</div>
 		</div>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$(".home-create-note").find("a").click(function(event) {
+					event.preventDefault();
+					$(this).hide();
+					$(this).next("form").slideDown("fast");
+				});
+			});
+		</script>
 	</jsp:body>
 </notes:authPage>

@@ -28,5 +28,8 @@
 				</fieldset>
 			</form>
 		</div>
+		<script type="text/javascript">
+			document.forms[0].j_username.focus();
+		</script>
 	</jsp:body>
 </notes:page>

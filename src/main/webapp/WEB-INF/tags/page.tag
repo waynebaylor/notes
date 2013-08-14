@@ -11,6 +11,8 @@
 	
 	<link rel="stylesheet" type="text/css" href="${contextPath}/assets/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${contextPath}/css/notes.css">
+	
+	<script type="text/javascript" src="${contextPath}/assets/jquery-2.0.2.min.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -24,7 +26,6 @@
 	
 	<jsp:doBody/>
 	
-	<script type="text/javascript" src="${contextPath}/assets/jquery-2.0.2.min.js"></script>
 	<script type="text/javascript" src="${contextPath}/assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

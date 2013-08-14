@@ -21,6 +21,19 @@ public class SearchController extends AuthController
 	@Autowired
 	private NoteManager noteManager;
 	
+	@RequestMapping(value="", method=RequestMethod.GET)
+	public ModelAndView index(@Param String q) {
+		ModelAndView m = new ModelAndView("searchView");
+		
+		User currentUser = this.getCurrentUser();
+		List<Note> notes = this.noteManager.findContainingPhrase(currentUser, q);
+		
+		m.addObject("q", q);
+		m.addObject("notes", notes);
+		
+		return m;
+	}
+	
 	@RequestMapping(value="/tag", method=RequestMethod.GET)
 	public ModelAndView tagSearch(@Param String[] names) {
 		ModelAndView m = new ModelAndView("searchView");

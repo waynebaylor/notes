@@ -125,6 +125,21 @@ public class NoteManager extends Manager
 		return (List<Note>)result;
 	}
 	
+	public List<Note> findContainingPhrase(User user, String phrase) {
+		String sql = "select distinct n.id, n.user_id as userId, n.content from note n where n.user_id = :user_id and n.content like concat('%', :phrase, '%')";
+		
+		Object result = this.session().createSQLQuery(sql)
+			.addScalar("id", StandardBasicTypes.LONG)
+			.addScalar("userId", StandardBasicTypes.LONG)
+			.addScalar("content", StandardBasicTypes.STRING)
+			.setParameter("user_id", user.getId())
+			.setParameter("phrase", phrase)
+			.setResultTransformer(Transformers.aliasToBean(Note.class))
+			.list();
+		
+		return (List<Note>)result;
+	}
+	
 	private List<String> parseTags(String content) {
 		List<String> tagNames = new ArrayList<String>();
 		
