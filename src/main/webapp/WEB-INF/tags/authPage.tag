@@ -7,11 +7,18 @@
 	<jsp:attribute name="navLinks">
 		<ul class="nav">
 			<li><a href="${contextPath}/home/view">Home</a></li>
-			<li><a href="${contextPath}/search/view">Search</a></li>
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
 				<li><a href="${contextPath}/admin/view">Admin</a></li>
 			</sec:authorize>
 		</ul>
+		
+		<form class="navbar-search form-search" method="get" action="${contextPath}/search">
+			<div class="input-append">
+				<input type="text" class="search-query" name="q" value="">
+				<button type="submit" class="btn"><i class="icon-search"></i></button>
+			</div>
+		</form>
+			
 		<ul class="nav pull-right">
 			<li><a href="${contextPath}/logout">Logout ${user.name}</a></li>
 		</ul>

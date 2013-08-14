@@ -5,22 +5,13 @@
 	<jsp:attribute name="title">Notes - Search</jsp:attribute>
 	<jsp:body>
 		<div class="container">
-			<form method="get" action="${contextPath}/search/submit">
-				<fieldset>	
-					<legend>Search</legend>	
-								
-					<notes:textField label="Query" name="q" value="${q}"/>
-					
-					<div class="form-actions">
-						<button type="submit" class="btn">Search</button>
-					</div>
-				</fieldset>
-			</form>
-			
 			<div class="search-results">
 				<form method="post" action="${contextPath}/note/delete">
 					<fieldset>	
 						<legend>Search Results</legend>
+						
+						<p>Showing results for: <strong>${q}</strong></p>
+						
 						<table class="table table-striped table-bordered table-condensed">
 							<thead>
 								<tr>
@@ -52,7 +43,9 @@
 						</table>
 					</fieldset>
 					
-					<button type="submit" class="btn">Delete</button>
+					<div class="form-actions">
+						<button type="submit" class="btn">Delete</button>
+					</div>
 				</form>
 			</div>
 		</div>

@@ -13,15 +13,6 @@
 				<div class="alert alert-success">${successMessage}</div>
 			</c:if>
 			
-			<div class="home-search">
-				<form class="form-inline" method="get" action="${contextPath}/search">
-					<div class="input-append">
-						<input type="text" class="span4" name="q" value="">
-						<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
-					</div>
-				</form>
-			</div>
-			
 			<div class="home-create-note">
 				<a href="#">Create Note</a>
 				<form class="form-vertical" style="display:none;" method="post" action="${contextPath}/note/create">
