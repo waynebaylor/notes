@@ -4,7 +4,7 @@
 <notes:authPage>
 	<jsp:attribute name="title">Notes - Admin</jsp:attribute>
 	<jsp:body>
-		<div class="container">
+		<div class="container-fluid">
 			<div class="admin-user-list">
 				<form method="post" action="${contextPath}/admin/delete-user">
 					<fieldset>

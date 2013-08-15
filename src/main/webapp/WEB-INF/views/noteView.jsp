@@ -4,8 +4,8 @@
 <notes:authPage>
 	<jsp:attribute name="title">Notes - View Note</jsp:attribute>
 	<jsp:body>
-		<div class="container">
-			<div class="row">
+		<div class="container-fluid">
+			<div class="row-fluid">
 				<div class="span2">
 					<ul class="note-tag-list">
 						<c:forEach items="${tags}" var="tag">

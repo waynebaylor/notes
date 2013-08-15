@@ -2,9 +2,9 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <notes:authPage>
-	<jsp:attribute name="title">Notes - Search</jsp:attribute>
+	<jsp:attribute name="title">Notes - Search Results</jsp:attribute>
 	<jsp:body>
-		<div class="container">
+		<div class="container-fluid">
 			<div class="search-results">
 				<form method="post" action="${contextPath}/note/delete">
 					<fieldset>	

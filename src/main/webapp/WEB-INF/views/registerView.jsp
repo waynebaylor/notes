@@ -4,7 +4,7 @@
 <notes:page>
 	<jsp:attribute name="title">Notes - Register User</jsp:attribute>
 	<jsp:body>
-		<div class="container">
+		<div class="container-fluid">
 			<c:if test="${!empty errorMessage}">
 				<div class="alert alert-error">${errorMessage}</div>
 			</c:if>

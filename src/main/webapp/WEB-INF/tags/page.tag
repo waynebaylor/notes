@@ -15,9 +15,9 @@
 	<script type="text/javascript" src="${contextPath}/assets/jquery-2.0.2.min.js"></script>
 </head>
 <body>
-	<div class="container">
-		<div class="navbar">
-			<div class="navbar-inner">
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container-fluid">
 				<a class="brand" href="${contextPath}/home/view">Notes</a>
 				${navLinks}
 			</div>
