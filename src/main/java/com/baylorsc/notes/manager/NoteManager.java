@@ -1,6 +1,7 @@
 package com.baylorsc.notes.manager;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -30,11 +31,12 @@ public class NoteManager extends Manager
 	
 	public Long createNote(Long userId, String content) {
 		// create the note.
-		String sql = "insert into note(user_id, content) values(:user_id, :content)"; 
+		String sql = "insert into note(user_id, content, created_on) values(:user_id, :content, :created_on)"; 
 		
 		this.session().createSQLQuery(sql)
 			.setParameter("user_id", userId)
 			.setParameter("content", content)
+			.setParameter("created_on", new Date())
 			.executeUpdate();
 
 		Long noteId = this.lastInsertId();
@@ -49,12 +51,13 @@ public class NoteManager extends Manager
 	}
 	
 	public List<Note> findAllNotes(Long userId) {
-		String sql = "select id, user_id as userId, content from note where user_id = :user_id"; 
+		String sql = "select id, user_id as userId, content, created_on as createdOn from note where user_id = :user_id order by createdOn desc"; 
 		
 		Object result = this.session().createSQLQuery(sql)
 			.addScalar("id", StandardBasicTypes.LONG)
 			.addScalar("userId", StandardBasicTypes.LONG)
 			.addScalar("content", StandardBasicTypes.STRING)
+			.addScalar("createdOn", StandardBasicTypes.DATE)
 			.setParameter("user_id", userId)
 			.setResultTransformer(Transformers.aliasToBean(Note.class))
 			.list();
@@ -76,12 +79,13 @@ public class NoteManager extends Manager
 	}
 	
 	public Note findNote(User user, Long id) {
-		String sql = "select id, user_id as userId, content from note where id = :id and user_id = :user_id"; 
+		String sql = "select id, user_id as userId, content, created_on as createdOn from note where id = :id and user_id = :user_id"; 
 		
 		Object result = this.session().createSQLQuery(sql)
 			.addScalar("id", StandardBasicTypes.LONG)
 			.addScalar("userId", StandardBasicTypes.LONG)
 			.addScalar("content", StandardBasicTypes.STRING)
+			.addScalar("createdOn", StandardBasicTypes.DATE)
 			.setParameter("id", id)
 			.setParameter("user_id", user.getId())
 			.setResultTransformer(Transformers.aliasToBean(Note.class))
@@ -111,12 +115,13 @@ public class NoteManager extends Manager
 	}
 	
 	public List<Note> findWithAnyTag(User user, String... tags) {
-		String sql = "select distinct n.id, n.user_id as userId, n.content from note n inner join tag t on n.id = t.note_id where n.user_id = :user_id and t.name in (:tags)";
+		String sql = "select distinct n.id, n.user_id as userId, n.content, n.created_on as createdOn from note n inner join tag t on n.id = t.note_id where n.user_id = :user_id and t.name in (:tags)  order by createdOn desc";
 		
 		Object result = this.session().createSQLQuery(sql)
 			.addScalar("id", StandardBasicTypes.LONG)
 			.addScalar("userId", StandardBasicTypes.LONG)
 			.addScalar("content", StandardBasicTypes.STRING)
+			.addScalar("createdOn", StandardBasicTypes.DATE)
 			.setParameter("user_id", user.getId())
 			.setParameterList("tags", tags)
 			.setResultTransformer(Transformers.aliasToBean(Note.class))
@@ -126,12 +131,13 @@ public class NoteManager extends Manager
 	}
 	
 	public List<Note> findContainingPhrase(User user, String phrase) {
-		String sql = "select distinct n.id, n.user_id as userId, n.content from note n where n.user_id = :user_id and n.content like concat('%', :phrase, '%')";
+		String sql = "select distinct n.id, n.user_id as userId, n.content, n.created_on as createdOn from note n where n.user_id = :user_id and n.content like concat('%', :phrase, '%')  order by createdOn desc";
 		
 		Object result = this.session().createSQLQuery(sql)
 			.addScalar("id", StandardBasicTypes.LONG)
 			.addScalar("userId", StandardBasicTypes.LONG)
 			.addScalar("content", StandardBasicTypes.STRING)
+			.addScalar("createdOn", StandardBasicTypes.DATE)
 			.setParameter("user_id", user.getId())
 			.setParameter("phrase", phrase)
 			.setResultTransformer(Transformers.aliasToBean(Note.class))

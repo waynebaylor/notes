@@ -1,5 +1,7 @@
 package com.baylorsc.notes.model;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -11,6 +13,8 @@ public class Note {
 	@NotNull(message="Content is required.")
 	@Size(min=1, message="Content is required.")
 	private String content;
+	
+	private Date createdOn;
 	
 	// methods
 	public Long getId() {
@@ -35,5 +39,13 @@ public class Note {
 	
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public Date getCreatedOn() {
+		return this.createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
 	}	
 }
