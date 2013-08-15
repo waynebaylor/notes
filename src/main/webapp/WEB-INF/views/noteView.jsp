@@ -6,7 +6,8 @@
 	<jsp:body>
 		<div class="container-fluid">
 			<div class="row-fluid">
-				<div class="span2">
+				<div class="span2 offset1">
+					<div class="tags-header">Tags</div>
 					<ul class="note-tag-list">
 						<c:forEach items="${tags}" var="tag">
 							<li>
@@ -15,9 +16,10 @@
 						</c:forEach>
 					</ul>
 				</div>
-				<div class="span10">
-					<pre>${util:escapeHtml(note.content)}</pre>
-				</div>			
+				<div class="span8">
+					<div class="note-header">Note</div>
+					<pre class="note-content">${util:escapeHtml(note.content)}</pre>
+				</div>		
 			</div>
 		</div>
 	</jsp:body>

@@ -30,6 +30,7 @@
 	</bean>
 	
     <security:http pattern="/assets/**" security="none"/>
+    <security:http pattern="/public/**" security="none"/>
     <security:http pattern="/login/**" security="none"/>
     <security:http pattern="/register/**" security="none"/>
     

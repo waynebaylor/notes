@@ -10,7 +10,7 @@
 	<title>${title}</title>
 	
 	<link rel="stylesheet" type="text/css" href="${contextPath}/assets/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="${contextPath}/css/notes.css">
+	<link rel="stylesheet" type="text/css" href="${contextPath}/public/css/notes.css">
 	
 	<script type="text/javascript" src="${contextPath}/assets/jquery-2.0.2.min.js"></script>
 </head>

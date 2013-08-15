@@ -1,0 +1,61 @@
+body {
+	background-color: white;
+	background-image: url("/notes/public/images/exclusive_paper.png");
+}
+
+table {
+	background-color: white;	
+}
+
+.navbar-inner {
+	border-radius: 0;
+}
+
+.navbar-inner .container-fluid {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+ul.note-tag-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+ul.note-tag-list li {
+	margin: 0;
+	padding: 0;
+	
+}
+
+legend {
+	margin-bottom: 0;
+	border: none;
+}
+
+legend + table, 
+legend + p, 
+legend + .control-group {
+	margin-top: 10px;
+}
+
+form .form-actions {
+	margin-top: 0;
+	border: none;
+	background-color: transparent;
+	padding-top:0;
+}
+
+.note-header,
+.tags-header {
+	font-size: 21px;
+	line-height: 40px;
+}
+
+pre.note-content {
+	background-color: transparent;
+	padding: 0;
+	border: none;
+	word-wrap: break-word;
+	
+}
