@@ -62,7 +62,7 @@
 									</c:forEach>
 									<c:if test="${empty notes}">
 										<tr>
-											<td colspan="2">No notes</td>
+											<td colspan="3">No notes</td>
 										</tr>
 									</c:if>
 								</tbody>
