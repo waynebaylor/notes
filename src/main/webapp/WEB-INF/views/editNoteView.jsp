@@ -23,6 +23,7 @@
 						
 						<div class="form-actions">
 							<button type="submit" class="btn">Save</button>
+							<a href="${contextPath}/home/view">Cancel</a>
 						</div>
 					</fieldset>
 				</form>

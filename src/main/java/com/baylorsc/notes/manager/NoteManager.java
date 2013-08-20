@@ -153,7 +153,7 @@ public class NoteManager extends Manager
 		// if any other characters are found then it's not interpreted as a tag.
 		String[] words = content.split("[\\s]+");
 		for(String word : words) {
-			if(word.matches("#[A-Za-z0-9]+")) {
+			if(word.matches("#[A-Za-z0-9-]+")) {
 				tagNames.add(word.substring(1, word.length()));
 			}
 		}

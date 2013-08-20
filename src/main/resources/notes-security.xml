@@ -20,7 +20,7 @@
 	<!-- 
 		REQUIRES system variable "notes.config" for property values.
 	 -->
-	<context:property-placeholder location="file://${notes.config}"/>
+	<context:property-placeholder location="file://${notes.config}" ignore-resource-not-found="true"/>
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="${datasource.driver:com.mysql.jdbc.Driver}"/>

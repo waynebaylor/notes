@@ -78,10 +78,12 @@
 		</div>
 		<script type="text/javascript">
 			$(document).ready(function() {
-				$(".home-create-note").find("a").click(function(event) {
+				var $homeCreateNote = $(".home-create-note");
+				$homeCreateNote.find("a").click(function(event) {
 					event.preventDefault();
 					$(this).hide();
 					$(this).next("form").slideDown("fast");
+					$homeCreateNote.find("textarea").focus();
 				});
 			});
 		</script>
