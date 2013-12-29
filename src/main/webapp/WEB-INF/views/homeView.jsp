@@ -56,7 +56,7 @@
 											</td>
 											<td>
 												<a href="${contextPath}/note/view?id=${note.id}">View</a>
-												<a href="${contextPath}/note//edit/view?id=${note.id}">Edit</a>
+												<a href="${contextPath}/note/edit/view?id=${note.id}">Edit</a>
 											</td>
 										</tr>
 									</c:forEach>
