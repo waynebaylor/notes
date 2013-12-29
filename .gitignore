@@ -1,6 +1,9 @@
 target/
 deploy.sh
+deploy.sh~
+*~
 .DS_Store
 .classpath
 .project
 .settings/
+
