@@ -18,6 +18,7 @@ import com.baylorsc.notes.manager.TagManager;
 import com.baylorsc.notes.model.Note;
 import com.baylorsc.notes.model.Tag;
 import com.baylorsc.notes.model.User;
+import com.github.rjeschke.txtmark.Processor;
 
 @Controller
 @RequestMapping("/note")
@@ -58,6 +59,12 @@ public class NoteController extends AuthController
 		
 		User currentUser = this.getCurrentUser();
 		Note note = this.noteManager.findNote(currentUser, id);
+		
+		// Stephanie adding Markdown processor stuff here :)
+		String markdownContent = Processor.process(note.getContent());
+		note.setContent(markdownContent);
+		// End Stephanie stuff
+		
 		List<Tag> tags = this.tagManager.findNoteTags(currentUser, note.getId());
 		
 		m.addObject("note", note);

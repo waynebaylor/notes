@@ -18,7 +18,8 @@
 				</div>
 				<div class="span8">
 					<div class="note-header">Note</div>
-					<pre class="note-content">${util:escapeHtml(note.content)}</pre>
+					<%-- Stephanie changing stuff. :) Not sure how to do this next part with the escape..  --%>
+					<div class="note-content">${note.content}</div>
 				</div>		
 			</div>
 		</div>
