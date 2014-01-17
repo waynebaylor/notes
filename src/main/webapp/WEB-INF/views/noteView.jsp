@@ -20,6 +20,12 @@
 					<div class="note-header">Note</div>
 					<%-- Stephanie changing stuff. :) Not sure how to do this next part with the escape..  --%>
 					<div class="note-content">${note.content}</div>
+					
+					<c:url var="editurl" value="/note/edit/view">
+						<c:param name="id" value="${note.id}" />
+					</c:url>
+					
+					<a href="${editurl}">Edit</a>
 				</div>		
 			</div>
 		</div>
