@@ -28,8 +28,9 @@ public class HomeController extends AuthController
 		List<Note> notes = this.noteManager.findAllNotes(currentUser.getId());
 		
 		for (Note note : notes) {
-			// Stephanie adding Markdown processor stuff here :)
-			String markdownContent = Processor.process(note.getContent());
+			// Markdown escape to keep #tags from turning into headers
+			String escapeNote = note.getContent().replaceAll("#([A-Za-z0-9-]+)", "\\\\#$1");
+			String markdownContent = Processor.process(escapeNote);
 			// Use regular expressions to remove html tags <**>
 			String strippedMarkdown = markdownContent.replaceAll("<.*?>", "");				
 			note.setContent(strippedMarkdown);			

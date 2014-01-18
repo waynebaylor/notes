@@ -18,7 +18,6 @@
 				</div>
 				<div class="span8">
 					<div class="note-header">Note</div>
-					<%-- Stephanie changing stuff. :) Not sure how to do this next part with the escape..  --%>
 					<div class="note-content">${note.content}</div>
 					
 					<c:url var="editurl" value="/note/edit/view">

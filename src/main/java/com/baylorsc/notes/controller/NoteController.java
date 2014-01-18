@@ -60,10 +60,12 @@ public class NoteController extends AuthController
 		User currentUser = this.getCurrentUser();
 		Note note = this.noteManager.findNote(currentUser, id);
 		
-		// Stephanie adding Markdown processor stuff here :)
-		String markdownContent = Processor.process(note.getContent());
+		// Markdown escape to keep #tags from turning into headers
+		String escapeNote = note.getContent().replaceAll("#([A-Za-z0-9-]+)", "\\\\#$1");
+		System.out.println(escapeNote);
+		
+		String markdownContent = Processor.process(escapeNote);
 		note.setContent(markdownContent);
-		// End Stephanie stuff
 		
 		List<Tag> tags = this.tagManager.findNoteTags(currentUser, note.getId());
 		
