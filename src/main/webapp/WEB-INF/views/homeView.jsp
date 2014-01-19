@@ -14,20 +14,8 @@
 					<div class="alert alert-success">${successMessage}</div>
 				</c:if>
 				
-				<div class="home-create-note">
-					<a href="#">Create Note</a>
-					<form class="form-vertical" style="display:none;" method="post" action="${contextPath}/note/create">
-						<fieldset>
-							<legend>Create Note</legend>
-							
-							<notes:textArea cssClass="span12" label="" name="content" bindingResult="${result}"/>
-							
-							<div class="form-actions">
-								<button type="submit" class="btn">Create</button>
-							</div>
-						</fieldset>
-					</form>
-				</div>
+				<c:url var="createNoteUrl" value="/note/create/view" />
+					<a href="${createNoteUrl}">Create Note</a>
 				
 				<div class="home-search-results">
 					<form method="post" action="${contextPath}/note/delete">

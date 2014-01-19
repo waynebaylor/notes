@@ -30,16 +30,22 @@ public class NoteController extends AuthController
 	@Autowired
 	private TagManager tagManager;
 	
-	@RequestMapping(value="/create", method=RequestMethod.POST)
+	@RequestMapping(value="/create/view", method=RequestMethod.GET)
+	public ModelAndView createView() {
+		ModelAndView m = new ModelAndView("createNoteView");
+		
+		return m;
+	}
+	
+	@RequestMapping(value="/create/submit", method=RequestMethod.POST)
 	public ModelAndView create(@Valid Note note, BindingResult result, RedirectAttributes flashAttrs) {
 		ModelAndView m = new ModelAndView();
 		
 		if(result.hasErrors()) {
 			m.addObject("result", result);
 			
-			flashAttrs.addFlashAttribute("errorMessage", "Save failed. Please correct the errors below.");
+			m.setViewName("createNoteView");
 			
-			m.setViewName("homeView");
 		}
 		else {
 			User currentUser = this.getCurrentUser();
@@ -52,7 +58,7 @@ public class NoteController extends AuthController
 		
 		return m;
 	}
-	
+
 	@RequestMapping(value="/view", method=RequestMethod.GET) 
 	public ModelAndView view(@Param Long id) {
 		ModelAndView m = new ModelAndView("noteView");
@@ -61,9 +67,7 @@ public class NoteController extends AuthController
 		Note note = this.noteManager.findNote(currentUser, id);
 		
 		// Markdown escape to keep #tags from turning into headers
-		String escapeNote = note.getContent().replaceAll("#([A-Za-z0-9-]+)", "\\\\#$1");
-		System.out.println(escapeNote);
-		
+		String escapeNote = note.getContent().replaceAll("#([A-Za-z0-9-]+)", "\\\\#$1");	
 		String markdownContent = Processor.process(escapeNote);
 		note.setContent(markdownContent);
 		
