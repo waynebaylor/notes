@@ -5,11 +5,10 @@
 	<jsp:attribute name="title">Notes - Search Results</jsp:attribute>
 	<jsp:body>
 		<div class="container-fluid">
+            <h1 class="note-header">Search Results</h1>
+            
 			<div class="search-results">
 				<form method="post" action="${contextPath}/note/delete">
-					<fieldset>	
-						<legend>Search Results</legend>
-						
 						<p>Showing results for: <strong>${q}</strong></p>
 						
 						<table class="table table-striped table-bordered table-condensed">

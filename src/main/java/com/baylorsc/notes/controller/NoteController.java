@@ -108,13 +108,13 @@ public class NoteController extends AuthController
 			
 			flashAttrs.addFlashAttribute("successMessage","Note saved.");
 			
-			m.setViewName("redirect:/home/view");
+			m.setViewName("redirect:/note/view?id="+note.getId());
 		}
 		
 		return m;
 	}
 	
-	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	@RequestMapping(value="/delete")
 	public ModelAndView delete(@Param Long[] noteIds) {
 		ModelAndView m = new ModelAndView("redirect:/home/view");
 		

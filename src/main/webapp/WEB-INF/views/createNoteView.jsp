@@ -12,20 +12,17 @@
 			
 				<c:url var="formActionUrl" value="/note/create/submit" />
 				
+                <h1 class="note-header">Create Note</h1>
 				<form method="post" action="${formActionUrl}">
-					<fieldset>
-						<legend>Create Note</legend>
+					<notes:textArea cssClass="span12" label="" name="content" value="${note.content}" />
 					
-						<notes:textArea cssClass="span12" label="" name="content" value="${note.content}" />
+					<div class="form-actions">
+						<button type="submit" class="btn">Save</button>
+						&nbsp;
 						
-						<div class="form-actions">
-							<button type="submit" class="btn">Save</button>
-							&nbsp;
-							
-							<c:url var="formCancelUrl" value="/home/view" />
-							<a href="${formCancelUrl}">Cancel</a>
-						</div>
-					</fieldset>
+						<c:url var="formCancelUrl" value="/home/view" />
+						<a href="${formCancelUrl}">Cancel</a>
+					</div>
 				</form>
 			</div>
 		</div>

@@ -14,19 +14,21 @@
 					<div class="alert alert-success">${successMessage}</div>
 				</c:if>
 				
+                <h1 class="note-header">Edit Note</h1>
+                
+                <p>         
+                    <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">Markdown Syntax</a>
+                </p>
+                        
 				<form method="post" action="${contextPath}/note/edit/submit">
-					<fieldset>	
-						<legend>Edit Note</legend>	
-									
-						<input type="hidden" name="id" value="${note.id}">
-						<notes:textArea cssClass="span12" label="" name="content" value="${note.content}"/>
-						
-						<div class="form-actions">
-							<button type="submit" class="btn">Save</button>
-							&nbsp;
-							<a href="${contextPath}/home/view">Cancel</a>
-						</div>
-					</fieldset>
+					<input type="hidden" name="id" value="${note.id}">
+					<notes:textArea cssClass="span12" label="" name="content" value="${note.content}"/>
+					
+					<div class="form-actions">
+						<button type="submit" class="btn">Save</button>
+						&nbsp;
+						<a href="${contextPath}/home/view">Cancel</a>
+					</div>
 				</form>
 			</div>
 		</div>

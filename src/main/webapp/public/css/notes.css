@@ -50,6 +50,7 @@ form .form-actions {
 .tags-header {
 	font-size: 21px;
 	line-height: 40px;
+	font-weight: normal;
 }
 
 pre.note-content {
@@ -58,4 +59,12 @@ pre.note-content {
 	border: none;
 	word-wrap: break-word;
 	
+}
+
+td.options {
+	white-space: nowrap;
+}
+
+.note-summary a {
+	color: #333;
 }

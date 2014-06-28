@@ -32,9 +32,11 @@ public class HomeController extends AuthController
 			String escapeNote = note.getContent().replaceAll("#([A-Za-z0-9-]+)", "\\\\#$1");
 			String markdownContent = Processor.process(escapeNote);
 			// Use regular expressions to remove html tags <**>
-			String strippedMarkdown = markdownContent.replaceAll("<.*?>", "");				
-			note.setContent(strippedMarkdown);			
-			// End Stephanie stuff	
+			String strippedMarkdown = markdownContent.replaceAll("<.*?>", "");	
+			// pick out the first line of text.
+			String firstLine = strippedMarkdown.substring(0, strippedMarkdown.indexOf("\n"));
+			
+			note.setContent(firstLine);			
 		}
 		
 		m.addObject("notes", notes);

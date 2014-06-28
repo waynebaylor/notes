@@ -6,6 +6,14 @@
 	<jsp:body>
 		<div class="container-fluid">
 			<div class="row-fluid">
+                <c:if test="${!empty errorMessage}">
+                    <div class="alert alert-error">${errorMessage}</div>
+                </c:if>
+                
+                <c:if test="${!empty successMessage}">
+                    <div class="alert alert-success">${successMessage}</div>
+                </c:if>
+                
 				<div class="span2 offset1">
 					<div class="tags-header">Tags</div>
 					<ul class="note-tag-list">

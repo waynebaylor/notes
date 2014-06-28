@@ -14,19 +14,17 @@
 					<div class="alert alert-success">${successMessage}</div>
 				</c:if>
 				
+                <h1 class="note-header">Login</h1>
+                
 				<form method="post" action="${contextPath}/j_spring_security_check" class="form-horizontal">
-					<fieldset>
-						<legend>Login</legend>
-						
-						<notes:textField label="Username" name="j_username" value="${j_username}"/>
-						<notes:passwordField label="Password" name="j_password" value=""/>
-						
-						<div class="form-actions">
-							<button type="submit" class="btn">Login</button>
-							&nbsp;
-							<a href="${contextPath}/register/view">Register</a>
-						</div>
-					</fieldset>
+					<notes:textField label="Username" name="j_username" value="${j_username}"/>
+					<notes:passwordField label="Password" name="j_password" value=""/>
+					
+					<div class="form-actions">
+						<button type="submit" class="btn">Login</button>
+						&nbsp;
+						<a href="${contextPath}/register/view">Register</a>
+					</div>
 				</form>
 			</div>
 		</div>
