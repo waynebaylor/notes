@@ -115,11 +115,13 @@ public class NoteController extends AuthController
 	}
 	
 	@RequestMapping(value="/delete")
-	public ModelAndView delete(@Param Long[] noteIds) {
+	public ModelAndView delete(@Param Long[] noteIds, RedirectAttributes flashAttrs) {
 		ModelAndView m = new ModelAndView("redirect:/home/view");
 		
 		User currentUser = this.getCurrentUser();
 		this.noteManager.delete(currentUser, noteIds);
+		
+		flashAttrs.addFlashAttribute("successMessage", "Note deleted.");
 		
 		return m;
 	}

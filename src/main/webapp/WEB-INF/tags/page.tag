@@ -13,6 +13,8 @@
 	<link rel="stylesheet" type="text/css" href="${contextPath}/public/css/notes.css">
 	
 	<script type="text/javascript" src="${contextPath}/assets/jquery-2.0.2.min.js"></script>
+    <script type="text/javascript" src="${contextPath}/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${contextPath}/assets/autosize/jquery.autosize.min.js"></script>
 </head>
 <body>
 	<div class="navbar">
@@ -25,7 +27,5 @@
 	</div>
 	
 	<jsp:doBody/>
-	
-	<script type="text/javascript" src="${contextPath}/assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

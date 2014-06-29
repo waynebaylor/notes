@@ -32,5 +32,9 @@
 				</form>
 			</div>
 		</div>
+        
+        <script type="text/javascript">
+            $("[name=content]").autosize();
+        </script>
 	</jsp:body>
 </notes:authPage>
