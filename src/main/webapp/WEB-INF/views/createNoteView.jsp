@@ -6,13 +6,17 @@
 	<jsp:body>
 		<div class="container-fluid">
 			<div class="row-fluid">
-				<c:if test="${result.hasFieldErrors('content')}">
-					<div class="alert alert-error">${result.getFieldError('content').defaultMessage}</div>
-				</c:if>
-			
-				<c:url var="formActionUrl" value="/note/create/submit" />
-				
+                <c:if test="${!empty errorMessage}">
+                    <div class="alert alert-error">${errorMessage}</div>
+                </c:if>
+                
+                <c:if test="${!empty successMessage}">
+                    <div class="alert alert-success">${successMessage}</div>
+                </c:if>
+                
                 <h1 class="note-header">Create Note</h1>
+                
+                <c:url var="formActionUrl" value="/note/create/submit" />
 				<form method="post" action="${formActionUrl}">
 					<notes:textArea cssClass="span12" label="" name="content" value="${note.content}" />
 					

@@ -42,8 +42,10 @@ public class NoteController extends AuthController
 		ModelAndView m = new ModelAndView();
 		
 		if(result.hasErrors()) {
-			m.addObject("result", result);
-			
+			m.addObject("bindingResult", result);
+            
+            m.addObject("errorMessage", "Save failed. Please correct the errors below.");
+            
 			m.setViewName("createNoteView");
 			
 		}
@@ -96,9 +98,9 @@ public class NoteController extends AuthController
 		ModelAndView m = new ModelAndView();
 		
 		if(result.hasErrors()) {
-			m.addObject("result", result);
+			m.addObject("bindingResult", result);
 			
-			flashAttrs.addFlashAttribute("errorMessage", "Save failed. Please correct the errors below.");
+			m.addObject("errorMessage", "Save failed. Please correct the errors below.");
 			
 			m.setViewName("editNoteView");
 		}
