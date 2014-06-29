@@ -4,12 +4,12 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.jboss.logging.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -60,7 +60,7 @@ public class NoteController extends AuthController
 	}
 
 	@RequestMapping(value="/view", method=RequestMethod.GET) 
-	public ModelAndView view(@Param Long id) {
+	public ModelAndView view(@RequestParam Long id) {
 		ModelAndView m = new ModelAndView("noteView");
 		
 		User currentUser = this.getCurrentUser();
@@ -80,7 +80,7 @@ public class NoteController extends AuthController
 	}
 	
 	@RequestMapping(value="/edit/view", method=RequestMethod.GET)
-	public ModelAndView edit(@Param Long id) {
+	public ModelAndView edit(@RequestParam Long id) {
 		ModelAndView m = new ModelAndView("editNoteView");
 		
 		User currentUser = this.getCurrentUser();
@@ -115,7 +115,7 @@ public class NoteController extends AuthController
 	}
 	
 	@RequestMapping(value="/delete")
-	public ModelAndView delete(@Param Long[] noteIds, RedirectAttributes flashAttrs) {
+	public ModelAndView delete(@RequestParam Long[] noteIds, RedirectAttributes flashAttrs) {
 		ModelAndView m = new ModelAndView("redirect:/home/view");
 		
 		User currentUser = this.getCurrentUser();
