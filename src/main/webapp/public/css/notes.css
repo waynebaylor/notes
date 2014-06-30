@@ -68,3 +68,11 @@ td.options {
 .note-summary a {
 	color: #333;
 }
+
+.view-note .well {
+	background-color: #fff;
+}
+
+.view-note .form-actions {
+	background-color: #fff;
+}
