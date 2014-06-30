@@ -2,11 +2,11 @@ package com.baylorsc.notes.controller;
 
 import java.util.List;
 
-import org.jboss.logging.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.baylorsc.notes.manager.NoteManager;
@@ -21,7 +21,7 @@ public class SearchController extends AuthController
 	private NoteManager noteManager;
 	
 	@RequestMapping(value="", method=RequestMethod.GET)
-	public ModelAndView index(@Param String q) {
+	public ModelAndView index(@RequestParam String q) {
 		ModelAndView m = new ModelAndView("searchView");
 		
 		User currentUser = this.getCurrentUser();
