@@ -51,11 +51,11 @@ public class NoteController extends AuthController
 		}
 		else {
 			User currentUser = this.getCurrentUser();
-			this.noteManager.createNote(currentUser.getId(), note.getContent());
+			Long noteId = this.noteManager.createNote(currentUser.getId(), note.getContent());
 			
 			flashAttrs.addFlashAttribute("successMessage","Note created.");
 			
-			m.setViewName("redirect:/home/view");
+			m.setViewName("redirect:/note/view?id="+noteId);
 		}
 		
 		return m;
