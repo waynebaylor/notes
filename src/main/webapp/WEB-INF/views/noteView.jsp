@@ -27,12 +27,18 @@
 				<div class="span9 well">
 					<div class="note-content">${note.content}</div>
 					
-					<c:url var="editurl" value="/note/edit/view">
-						<c:param name="id" value="${note.id}" />
-					</c:url>
-					
                     <div class="form-actions">
-					   <a href="${editurl}">Edit</a>
+                        <c:url var="editurl" value="/note/edit/view">
+                            <c:param name="id" value="${note.id}" />
+                        </c:url>
+					    <a href="${editurl}">Edit</a>
+                    
+                        &nbsp;
+                        
+                        <c:url var="deleteUrl" value="/note/delete">
+                            <c:param name="noteIds" value="${note.id}"/>
+                        </c:url>
+                        <a href="${deleteUrl}" title="Delete note" onclick="return confirm('Are you sure?');">Delete</a>
                     </div>
 				</div>		
 			</div>
