@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.SessionFactory;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.StandardBasicTypes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +21,7 @@ public class NoteManager extends Manager
 	private TagManager tagManager;
 	
 	@Autowired
-	private SessionFactory sessionFactory;
-	
-	@Override
-	public SessionFactory getSessionFactory() {
-		return this.sessionFactory;
-	}
+	private QueryManager queryManager;
 	
 	public Long createNote(Long userId, String content) {
 		// create the note.
@@ -51,18 +45,13 @@ public class NoteManager extends Manager
 	}
 	
 	public List<Note> findAllNotes(Long userId) {
-		String sql = "select id, user_id as userId, content, created_on as createdOn from note where user_id = :user_id order by createdOn desc"; 
-		
-		Object result = this.session().createSQLQuery(sql)
-			.addScalar("id", StandardBasicTypes.LONG)
-			.addScalar("userId", StandardBasicTypes.LONG)
-			.addScalar("content", StandardBasicTypes.STRING)
-			.addScalar("createdOn", StandardBasicTypes.DATE)
-			.setParameter("user_id", userId)
-			.setResultTransformer(Transformers.aliasToBean(Note.class))
-			.list();
-		
-		return (List<Note>)result;
+	    List<Note> notes = this.queryManager.beanList(
+	            "Note.findAllNotes", 
+	            Parameters.create()
+	                .set("user_id", userId), 
+	            Note.class);
+	    
+	    return notes;
 	}
 	
 	public void delete(User user, Long... noteIds) {
@@ -79,19 +68,14 @@ public class NoteManager extends Manager
 	}
 	
 	public Note findNote(User user, Long id) {
-		String sql = "select id, user_id as userId, content, created_on as createdOn from note where id = :id and user_id = :user_id"; 
-		
-		Object result = this.session().createSQLQuery(sql)
-			.addScalar("id", StandardBasicTypes.LONG)
-			.addScalar("userId", StandardBasicTypes.LONG)
-			.addScalar("content", StandardBasicTypes.STRING)
-			.addScalar("createdOn", StandardBasicTypes.DATE)
-			.setParameter("id", id)
-			.setParameter("user_id", user.getId())
-			.setResultTransformer(Transformers.aliasToBean(Note.class))
-			.uniqueResult();
-		
-		return (Note)result;
+	    Note note = this.queryManager.uniqueBean(
+	            "Note.findNote",
+	            Parameters.create()
+	                .set("id", id)
+	                .set("user_id", user.getId()),
+	            Note.class);
+	    
+		return note;
 	}
 	
 	public void save(User user, Note note) {
@@ -115,35 +99,25 @@ public class NoteManager extends Manager
 	}
 	
 	public List<Note> findWithAnyTag(User user, String... tags) {
-		String sql = "select distinct n.id, n.user_id as userId, n.content, n.created_on as createdOn from note n inner join tag t on n.id = t.note_id where n.user_id = :user_id and t.name in (:tags)  order by createdOn desc";
-		
-		Object result = this.session().createSQLQuery(sql)
-			.addScalar("id", StandardBasicTypes.LONG)
-			.addScalar("userId", StandardBasicTypes.LONG)
-			.addScalar("content", StandardBasicTypes.STRING)
-			.addScalar("createdOn", StandardBasicTypes.DATE)
-			.setParameter("user_id", user.getId())
-			.setParameterList("tags", tags)
-			.setResultTransformer(Transformers.aliasToBean(Note.class))
-			.list();
-		
-		return (List<Note>)result;
+	    List<Note> notes = this.queryManager.beanList(
+	            "Note.findWithAnyTag",
+	            Parameters.create()
+	                .set("user_id", user.getId())
+	                .set("tags", tags),
+	                Note.class);
+
+	    return notes;
 	}
 	
 	public List<Note> findContainingPhrase(User user, String phrase) {
-		String sql = "select distinct n.id, n.user_id as userId, n.content, n.created_on as createdOn from note n where n.user_id = :user_id and n.content like concat('%', :phrase, '%')  order by createdOn desc";
-		
-		Object result = this.session().createSQLQuery(sql)
-			.addScalar("id", StandardBasicTypes.LONG)
-			.addScalar("userId", StandardBasicTypes.LONG)
-			.addScalar("content", StandardBasicTypes.STRING)
-			.addScalar("createdOn", StandardBasicTypes.DATE)
-			.setParameter("user_id", user.getId())
-			.setParameter("phrase", phrase)
-			.setResultTransformer(Transformers.aliasToBean(Note.class))
-			.list();
-		
-		return (List<Note>)result;
+	    List<Note> notes = this.queryManager.beanList(
+	            "Note.findContainingPhrase",
+	            Parameters.create()
+	                .set("user_id", user.getId())
+	                .set("phrase", phrase),
+	            Note.class);
+	    
+	    return notes;
 	}
 	
 	private List<String> parseTags(String content) {

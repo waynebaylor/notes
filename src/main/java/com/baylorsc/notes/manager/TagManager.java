@@ -2,10 +2,8 @@ package com.baylorsc.notes.manager;
 
 import java.util.List;
 
-import org.hibernate.SessionFactory;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.StandardBasicTypes;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,14 +14,6 @@ import com.baylorsc.notes.model.User;
 @Transactional
 public class TagManager extends Manager
 {
-	@Autowired
-	private SessionFactory sessionFactory;
-	
-	@Override
-	public SessionFactory getSessionFactory() {
-		return this.sessionFactory;
-	}
-	
 	public Long createTag(Long noteId, String name) {
 		String sql = "insert into tag(note_id, name) values(:note_id, :name)"; 
 

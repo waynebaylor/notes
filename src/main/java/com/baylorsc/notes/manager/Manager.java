@@ -3,10 +3,16 @@ package com.baylorsc.notes.manager;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.type.StandardBasicTypes;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class Manager 
 {
-	public abstract SessionFactory getSessionFactory();
+    @Autowired
+    private SessionFactory sessionFactory;
+    
+	public SessionFactory getSessionFactory() {
+	    return this.sessionFactory;
+	}
 	
 	public Session session() {
 		return this.getSessionFactory().getCurrentSession();

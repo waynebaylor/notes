@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <sql-query name="Note.findAllNotes">
+        <return-scalar column="id" type="long" />
+        <return-scalar column="userId" type="long" />
+        <return-scalar column="content" type="string" />
+        <return-scalar column="createdOn" type="timestamp" />
+        
+        <![CDATA[
+            select 
+                id, 
+                user_id as userId, 
+                content, 
+                created_on as createdOn 
+            from 
+                note 
+            where 
+                user_id = :user_id 
+            order by 
+                createdOn desc
+        ]]>
+    </sql-query>
+    
+    <sql-query name="Note.findNote">
+        <return-scalar column="id" type="long" />
+        <return-scalar column="userId" type="long" />
+        <return-scalar column="content" type="string" />
+        <return-scalar column="createdOn" type="timestamp" />
+        
+        <![CDATA[
+            select 
+                id, 
+                user_id as userId, 
+                content, 
+                created_on as createdOn 
+            from 
+                note 
+            where 
+                id = :id 
+            and 
+                user_id = :user_id
+        ]]>
+    </sql-query>
+    
+    <sql-query name="Note.findWithAnyTag">
+        <return-scalar column="id" type="long" />
+        <return-scalar column="userId" type="long" />
+        <return-scalar column="content" type="string" />
+        <return-scalar column="createdOn" type="timestamp" />
+        
+        <![CDATA[
+            select distinct 
+                n.id, 
+                n.user_id as userId, 
+                n.content, 
+                n.created_on as createdOn 
+            from 
+                note n 
+            inner join 
+                tag t 
+            on 
+                n.id = t.note_id 
+            where 
+                n.user_id = :user_id 
+            and 
+                t.name in (:tags)  
+            order by 
+                createdOn desc
+        ]]>
+    </sql-query>
+    
+    <sql-query name="Note.findContainingPhrase">
+        <return-scalar column="id" type="long" />
+        <return-scalar column="userId" type="long" />
+        <return-scalar column="content" type="string" />
+        <return-scalar column="createdOn" type="timestamp" />
+        
+        <![CDATA[
+            select distinct 
+                n.id, 
+                n.user_id as userId, 
+                n.content, 
+                n.created_on as createdOn 
+            from 
+                note n 
+            where 
+                n.user_id = :user_id 
+            and 
+                n.content like concat('%', :phrase, '%')  
+            order by 
+                createdOn desc
+        ]]>
+    </sql-query>
+    
+</hibernate-mapping>
+

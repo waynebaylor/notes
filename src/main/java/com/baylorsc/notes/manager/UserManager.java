@@ -3,12 +3,8 @@ package com.baylorsc.notes.manager;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.SessionFactory;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.StandardBasicTypes;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,14 +14,6 @@ import com.baylorsc.notes.model.User;
 @Transactional
 public class UserManager extends Manager
 {
-	@Autowired
-	private SessionFactory sessionFactory;
-	
-	@Override
-	public SessionFactory getSessionFactory() {
-		return this.sessionFactory;
-	}
-
 	public boolean userExists(User user) {
 		String sql = "select count(*) as count from user where username = :username";
 		
