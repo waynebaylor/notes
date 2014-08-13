@@ -16,6 +16,10 @@
                 
                 <h1 class="note-header">Create Note</h1>
                 
+                <p>         
+                    <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">Markdown Syntax</a>
+                </p>
+                
                 <c:url var="formActionUrl" value="/note/create/submit" />
 				<form method="post" action="${formActionUrl}">
 					<notes:textArea cssClass="span12" label="" name="content" value="${note.content}" />
