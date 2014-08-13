@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <sql-query name="Note.insert">
+        <![CDATA[
+            insert into note(user_id, content, created_on) 
+            values(:user_id, :content, :created_on)
+        ]]>
+    </sql-query>
+    
+    <sql-query name="Note.delete">
+        <![CDATA[
+            delete from note 
+            where user_id = :user_id and id in (:noteIds)
+        ]]>
+    </sql-query>
+    
+    <sql-query name="Note.update">
+        <![CDATA[
+            update note 
+            set content = :content 
+            where id = :id 
+            and user_id = :user_id
+        ]]>
+    </sql-query>
+    
+    <sql-query name="Tag.insert">
+        <![CDATA[
+            insert into tag(note_id, name) 
+            values(:note_id, :name)
+        ]]>
+    </sql-query>
+    
+    <sql-query name="Tag.delete">
+        <![CDATA[
+            delete from tag 
+            where note_id in (:note_ids) 
+            and note_id in (
+                select n.id from note n 
+                where n.user_id = :user_id
+            )
+        ]]>
+    </sql-query>
+    
+    <sql-query name="User.insert">
+        <![CDATA[
+            insert into user(username, password, enabled) 
+            values(:username, :password, :enabled)
+        ]]>
+    </sql-query>
+    
+    <sql-query name="Role.insert">
+        <![CDATA[
+            insert into role(user_id, authority) 
+            values(:user_id, :authority)
+        ]]>
+    </sql-query>
+    
+    <sql-query name="Role.delete">
+        <![CDATA[
+            delete from role where user_id = :user_id
+        ]]>
+    </sql-query>
+    
+    <sql-query name="User.delete">
+        <![CDATA[
+            delete from user where id = :id
+        ]]>
+    </sql-query>
+</hibernate-mapping>
+

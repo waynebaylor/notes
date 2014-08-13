@@ -17,7 +17,7 @@ public class QueryManager extends Manager
         
         for(Map.Entry<String, Object> entry : parameters.asMap().entrySet()) {
             if(List.class.isAssignableFrom(entry.getValue().getClass())) {
-                q.setParameterList(entry.getKey(), (List)entry.getValue());
+                q.setParameterList(entry.getKey(), (List<?>)entry.getValue());
             }
             else if(entry.getValue() instanceof Object[]) {
                 q.setParameterList(entry.getKey(), (Object[])entry.getValue());
@@ -43,7 +43,7 @@ public class QueryManager extends Manager
                 .setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP)
                 .uniqueResult();
         
-        return (Map)result;
+        return (Map<String, Object>)result;
     }
     
     public <T> List<T> beanList(String queryName, Parameters parameters, Class<T> beanType) {

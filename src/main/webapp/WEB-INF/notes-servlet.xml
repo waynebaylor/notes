@@ -40,7 +40,8 @@
         </property>
         <property name="mappingResources">
 	        <list>
-	           <value>named-queries.hbm.xml</value>
+	           <value>sql-queries.hbm.xml</value>
+	           <value>sql-dml.hbm.xml</value>
 	        </list>
         </property>
     </bean>

@@ -2,8 +2,7 @@ package com.baylorsc.notes.manager;
 
 import java.util.List;
 
-import org.hibernate.transform.Transformers;
-import org.hibernate.type.StandardBasicTypes;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +13,11 @@ import com.baylorsc.notes.model.User;
 @Transactional
 public class TagManager extends Manager
 {
+    @Autowired
+    private QueryManager queryManager;
+    
 	public Long createTag(Long noteId, String name) {
-		String sql = "insert into tag(note_id, name) values(:note_id, :name)"; 
-
-		this.session().createSQLQuery(sql)
+		this.session().getNamedQuery("Tag.insert")
 			.setParameter("note_id", noteId)
 			.setParameter("name", name)
 			.executeUpdate();
@@ -28,24 +28,16 @@ public class TagManager extends Manager
 	}
 
 	public List<Tag> findNoteTags(User user, Long noteId) {
-		String sql = "select t.id, t.note_id as noteId, t.name from tag t where t.note_id = :note_id and t.note_id in (select n.id from note n where n.user_id = :user_id)"; 
-		
-		Object result = this.session().createSQLQuery(sql)
-			.addScalar("id", StandardBasicTypes.LONG)
-			.addScalar("noteId", StandardBasicTypes.LONG)
-			.addScalar("name", StandardBasicTypes.STRING)
-			.setParameter("note_id", noteId)
-			.setParameter("user_id", user.getId())
-			.setResultTransformer(Transformers.aliasToBean(Tag.class))
-			.list();
-			
-		return (List<Tag>)result;
+		return this.queryManager.beanList(
+		        "Tag.findNoteTags", 
+		        Parameters.create()
+		            .set("note_id", noteId)
+		            .set("user_id", user.getId()), 
+		        Tag.class);
 	}
 	
 	public void delete(User user, Long... noteIds) {
-		String sql = "delete from tag where note_id in (:note_ids) and note_id in (select n.id from note n where n.user_id = :user_id)";
-		
-		this.session().createSQLQuery(sql)
+		this.session().getNamedQuery("Tag.delete")
 			.setParameter("user_id", user.getId())
 			.setParameterList("note_ids", noteIds)
 			.executeUpdate();

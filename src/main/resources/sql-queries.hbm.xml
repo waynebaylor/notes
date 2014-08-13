@@ -96,5 +96,91 @@
         ]]>
     </sql-query>
     
+    <sql-query name="Tag.findNoteTags">
+        <return-scalar column="id" type="long" />
+        <return-scalar column="noteId" type="long" />
+        <return-scalar column="name" type="string" />
+        
+        <![CDATA[
+            select 
+                t.id, 
+                t.note_id as noteId, 
+                t.name 
+            from 
+                tag t 
+            where 
+                t.note_id = :note_id 
+            and 
+                t.note_id in (
+                    select n.id from note n 
+                    where n.user_id = :user_id
+                )
+        ]]>
+    </sql-query>
+    
+    <sql-query name="User.userExists">
+        <return-scalar column="count" type="integer" />
+        
+        <![CDATA[
+            select count(*) as count 
+            from user 
+            where username = :username
+        ]]>
+    </sql-query>
+    
+    <sql-query name="User.findUser">
+        <return-scalar column="id" type="long" />
+        <return-scalar column="username" type="string" />
+        <return-scalar column="enabled" type="true_false" />
+        
+        <![CDATA[
+            select 
+                id, 
+                username, 
+                enabled 
+            from 
+                user 
+            where 
+                username = :username
+        ]]>
+    </sql-query>
+    
+    <sql-query name="User.findAllUsers">
+        <return-scalar column="id" type="long" />
+        <return-scalar column="username" type="string" />
+        <return-scalar column="enabled" type="true_false" />
+        
+        <![CDATA[
+            select 
+                id, 
+                username, 
+                enabled 
+            from 
+                user 
+        ]]>
+    </sql-query>
+    
+    <sql-query name="User.findAllUsersStatus">
+        <return-scalar column="id" type="long" />
+        <return-scalar column="username" type="string" />
+        <return-scalar column="enabled" type="true_false" />
+        <return-scalar column="authority" type="string" />
+        
+        <![CDATA[
+            select 
+                u.id, 
+                u.username, 
+                u.enabled, 
+                r.authority 
+            from 
+                user u 
+            left join 
+                role r 
+            on 
+                u.id = r.user_id 
+            and 
+                r.authority = 'ROLE_ADMIN' 
+        ]]>
+    </sql-query>
 </hibernate-mapping>
 

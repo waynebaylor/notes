@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.transform.Transformers;
-import org.hibernate.type.StandardBasicTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,10 +22,7 @@ public class NoteManager extends Manager
 	private QueryManager queryManager;
 	
 	public Long createNote(Long userId, String content) {
-		// create the note.
-		String sql = "insert into note(user_id, content, created_on) values(:user_id, :content, :created_on)"; 
-		
-		this.session().createSQLQuery(sql)
+		this.session().getNamedQuery("Note.insert")
 			.setParameter("user_id", userId)
 			.setParameter("content", content)
 			.setParameter("created_on", new Date())
@@ -55,13 +50,11 @@ public class NoteManager extends Manager
 	}
 	
 	public void delete(User user, Long... noteIds) {
-		// delete any tags associaated with the notes first.
+		// delete any tags associated with the notes first.
 		this.tagManager.delete(user, noteIds);
 		
 		// delete the notes.
-		String sql = "delete from note where user_id = :user_id and id in (:noteIds)";
-		
-		this.session().createSQLQuery(sql)
+		this.session().getNamedQuery("Note.delete")
 			.setParameter("user_id", user.getId())
 			.setParameterList("noteIds", noteIds)
 			.executeUpdate();
@@ -89,9 +82,7 @@ public class NoteManager extends Manager
 		}
 		
 		// save note.
-		String sql = "update note set content = :content where id = :id and user_id = :user_id";
-		
-		this.session().createSQLQuery(sql)
+		this.session().getNamedQuery("Note.update")
 			.setParameter("content", note.getContent())
 			.setParameter("id", note.getId())
 			.setParameter("user_id", user.getId())
