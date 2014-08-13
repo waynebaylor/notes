@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.baylorsc.notes.manager.UserManager;
 
@@ -29,12 +30,14 @@ public class AdminController extends AuthController
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value="/delete-user")
-	public ModelAndView deleteUser(@RequestParam Long[] userIds) {
+	public ModelAndView deleteUser(@RequestParam Long[] userIds, RedirectAttributes flashAttrs) {
 		ModelAndView m = new ModelAndView("redirect:/admin/view");
 		
 		for(Long userId : userIds) {
 			this.userManager.deleteUser(userId);
 		}
+		
+		flashAttrs.addFlashAttribute("successMessage", "User deleted.");
 		
 		return m;
 	}
