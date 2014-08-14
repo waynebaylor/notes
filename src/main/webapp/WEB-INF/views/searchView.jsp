@@ -5,48 +5,64 @@
 	<jsp:attribute name="title">Notes - Search Results</jsp:attribute>
 	<jsp:body>
 		<div class="container-fluid">
-            <h1 class="note-header">Search Results</h1>
-            
-			<div class="search-results">
-				<form method="post" action="${contextPath}/note/delete">
-						<p>Showing results for: <strong>${q}</strong></p>
-						
-						<table class="table table-striped table-bordered table-condensed">
-							<thead>
-								<tr>
-									<th></th>
-									<th>Note</th>
-									<th>Options</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach items="${notes}" var="note">
-									<tr>
-										<td>
-											<input type="checkbox" id="noteIds_${note.id}" name="noteIds" value="${note.id}">
-										</td>
-										<td>
-											<label for="noteIds_${note.id}">
-												<c:set var="noteContent" value="${fn:substring(note.content, 0, 100)}"/>
-												${util:escapeHtml(noteContent)}
-												<c:if test="${fn:length(note.content) > 100}">...</c:if>
-											</label>
-										</td>
-										<td>
-											<a href="${contextPath}/note/view?id=${note.id}">View</a>
-											<a href="${contextPath}/note//edit/view?id=${note.id}">Edit</a>
-										</td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-					</fieldset>
-					
-					<div class="form-actions">
-						<button type="submit" class="btn">Delete</button>
-					</div>
-				</form>
-			</div>
+            <div class="row-fluid">
+                <c:if test="${!empty errorMessage}">
+                    <div class="alert alert-error">${errorMessage}</div>
+                </c:if>
+                
+                <c:if test="${!empty successMessage}">
+                    <div class="alert alert-success">${successMessage}</div>
+                </c:if>
+                
+                <h1 class="note-header">Search Results</h1>
+                
+                <p>Showing results for: <strong>${q}</strong></p>
+                
+                <p>
+                    <c:url var="createNoteUrl" value="/note/create/view" />
+                    <a href="${createNoteUrl}">Create Note</a>
+                </p>
+                
+                <table class="table table-striped table-condensed table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Note</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach items="${notes}" var="note">
+                            <tr>
+                                <td class="note-summary">
+                                    <c:url var="viewUrl" value="/note/view">
+                                        <c:param name="id" value="${note.id}"/>
+                                    </c:url>
+                                    <a href="${viewUrl}" title="View note">
+                                        ${note.content}
+                                        
+                                    </a>
+                                </td>
+                                <td class="options">
+                                    <c:url var="editUrl" value="/note/edit/view">
+                                        <c:param name="id" value="${note.id}"/>
+                                    </c:url>
+                                    <a href="${editUrl}" title="Edit note">Edit</a>
+                                    
+                                    <c:url var="deleteUrl" value="/note/delete">
+                                        <c:param name="noteIds" value="${note.id}"/>
+                                    </c:url>
+                                    <a href="${deleteUrl}" title="Delete note" onclick="return confirm('Are you sure?');">Delete</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        <c:if test="${empty notes}">
+                            <tr>
+                                <td colspan="2">No notes</td>
+                            </tr>
+                        </c:if>
+                    </tbody>
+                </table>
+            </div>
 		</div>
 	</jsp:body>
 </notes:authPage>

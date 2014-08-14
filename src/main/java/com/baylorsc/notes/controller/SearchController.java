@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.baylorsc.notes.manager.NoteManager;
 import com.baylorsc.notes.model.Note;
 import com.baylorsc.notes.model.User;
+import com.github.rjeschke.txtmark.Processor;
 
 @Controller
 @RequestMapping("/search")
@@ -33,6 +34,18 @@ public class SearchController extends AuthController
 		else {
 			notes = this.noteManager.findContainingPhrase(currentUser, q);	
 		}
+		
+		for (Note note : notes) {
+            // Markdown escape to keep #tags from turning into headers
+            String escapeNote = note.getContent().replaceAll("#([A-Za-z0-9-]+)", "\\\\#$1");
+            String markdownContent = Processor.process(escapeNote);
+            // Use regular expressions to remove html tags <**>
+            String strippedMarkdown = markdownContent.replaceAll("<.*?>", "");  
+            // pick out the first line of text.
+            String firstLine = strippedMarkdown.substring(0, strippedMarkdown.indexOf("\n"));
+            
+            note.setContent(firstLine);         
+        }
 		
 		m.addObject("q", q);
 		m.addObject("notes", notes);
